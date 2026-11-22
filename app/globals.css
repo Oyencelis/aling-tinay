@@ -1,0 +1,329 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --cream: #f6ebd9;
+  --brown: #3b2314;
+  --chili: #d93a25;
+  --corn: #f2b705;
+  --pandan: #3f7d4e;
+  --ink: #1a1210;
+  --edge: clamp(18px, 4.5vw, 72px);
+  --header-h: 64px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --header-h: 76px;
+  }
+}
+
+@layer base {
+  html {
+    -webkit-text-size-adjust: 100%;
+    scroll-padding-top: 90px;
+  }
+
+  html.is-locked,
+  html.is-locked body {
+    overflow: hidden;
+  }
+
+  body {
+    background: var(--cream);
+    color: var(--ink);
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: hidden;
+  }
+
+  img,
+  svg {
+    display: block;
+  }
+
+  ::selection {
+    background: var(--chili);
+    color: var(--cream);
+  }
+
+  :focus-visible {
+    outline: 3px solid var(--chili);
+    outline-offset: 3px;
+  }
+
+  h1,
+  h2,
+  h3 {
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .edge {
+    padding-left: var(--edge);
+    padding-right: var(--edge);
+  }
+
+  .display {
+    font-family: var(--font-display), "Arial Black", system-ui, sans-serif;
+    font-weight: 800;
+    text-transform: uppercase;
+    line-height: 0.8;
+    letter-spacing: -0.035em;
+  }
+
+  .display-outline {
+    color: transparent;
+    /* currentColor would resolve to the transparent fill, so the stroke needs
+       an explicit colour. Callers set --outline; cream is the safe default. */
+    -webkit-text-stroke: 2px var(--outline, #f6ebd9);
+  }
+
+  .kicker {
+    font-size: 0.6875rem;
+    line-height: 1.2;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    font-weight: 700;
+  }
+
+  .btn-ink {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6rem;
+    border: 2px solid var(--ink);
+    padding: 0.8rem 1.15rem;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    transition: transform 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease,
+      color 0.18s ease;
+    box-shadow: 4px 4px 0 0 var(--ink);
+  }
+
+  .btn-ink:hover {
+    transform: translate(-1px, -1px);
+    box-shadow: 6px 6px 0 0 var(--ink);
+  }
+
+  .btn-ink:active {
+    transform: translate(2px, 2px);
+    box-shadow: 1px 1px 0 0 var(--ink);
+  }
+
+  .sticker {
+    border: 2px solid var(--ink);
+    box-shadow: 5px 6px 0 0 var(--ink);
+  }
+
+  .tag-notch {
+    clip-path: polygon(0 0, calc(100% - 22px) 0, 100% 22px, 100% 100%, 0 100%);
+  }
+
+  .tape {
+    background: repeating-linear-gradient(
+      45deg,
+      rgba(59, 35, 20, 0.12) 0 6px,
+      rgba(246, 235, 217, 0.55) 6px 12px
+    );
+  }
+
+  .line-mask {
+    display: block;
+    overflow: hidden;
+    padding-bottom: 0.08em;
+    margin-bottom: -0.08em;
+  }
+
+  .line-mask > span {
+    display: block;
+    will-change: transform;
+  }
+
+  .no-scrollbar {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tag-card {
+    transform: rotate(var(--rot, 0deg));
+  }
+
+  .card-jiggle:hover,
+  .card-jiggle:focus-visible {
+    animation: jiggle 0.5s ease-in-out;
+  }
+
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.06;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+    mix-blend-mode: multiply;
+  }
+}
+
+@keyframes jiggle {
+  0%,
+  100% {
+    transform: rotate(var(--rot, 0deg)) translateX(0);
+  }
+  25% {
+    transform: rotate(calc(var(--rot, 0deg) - 2.2deg)) translateX(-2px);
+  }
+  50% {
+    transform: rotate(calc(var(--rot, 0deg) + 1.6deg)) translateX(2px);
+  }
+  75% {
+    transform: rotate(calc(var(--rot, 0deg) - 1deg)) translateX(-1px);
+  }
+}
+
+@keyframes floaty {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) rotate(var(--float-rot, 0deg));
+  }
+  50% {
+    transform: translate3d(0, -12px, 0) rotate(calc(var(--float-rot, 0deg) + 2deg));
+  }
+}
+
+.floaty {
+  animation: floaty var(--float-dur, 5s) ease-in-out infinite;
+  animation-delay: var(--float-delay, 0s);
+}
+
+@keyframes marquee-x {
+  from {
+    transform: translate3d(0, 0, 0);
+  }
+  to {
+    transform: translate3d(-50%, 0, 0);
+  }
+}
+
+.marquee-track {
+  animation: marquee-x var(--marquee-dur, 42s) linear infinite;
+  will-change: transform;
+}
+
+.marquee-track.reverse {
+  animation-direction: reverse;
+}
+
+.marquee:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+@keyframes blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.15;
+  }
+}
+
+@keyframes spin-slow {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin-slow {
+  animation: spin-slow 18s linear infinite;
+}
+
+body.custom-cursor,
+body.custom-cursor a,
+body.custom-cursor button,
+body.custom-cursor [role="button"] {
+  cursor: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+
+  .floaty,
+  .wave,
+  .next-arrow,
+  .scroll-dot,
+  .spin-slow {
+    animation: none !important;
+  }
+}
+
+@keyframes nudge {
+  0%,
+  100% {
+    transform: translateY(-2px);
+  }
+  50% {
+    transform: translateY(3px);
+  }
+}
+
+.next-arrow {
+  animation: nudge 1.7s ease-in-out infinite;
+}
+
+@keyframes scroll-dot {
+  0% {
+    transform: translateY(0);
+    opacity: 0;
+  }
+  15% {
+    opacity: 1;
+  }
+  80% {
+    transform: translateY(42px);
+    opacity: 0;
+  }
+  100% {
+    transform: translateY(42px);
+    opacity: 0;
+  }
+}
+
+.scroll-dot {
+  animation: scroll-dot 2.3s ease-in-out infinite;
+}
+
+@keyframes wave {
+  0%,
+  100% {
+    transform: rotate(-4deg);
+  }
+  50% {
+    transform: rotate(4deg);
+  }
+}
+
+.wave {
+  animation: wave 3.2s ease-in-out infinite;
+  transform-origin: 50% 90%;
+}
